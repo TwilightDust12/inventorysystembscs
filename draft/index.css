@@ -1,59 +1,165 @@
-.main {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    grid-template-rows: 1fr 4fr;
-    width: 100vw;
-    height: 100vh;
-    gap: 0;
-}
-
-.one {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-    background-color: aqua;
-    border-right: 5px solid white;
-    border-bottom: 5px solid white;
-}
-
-.two {
-    grid-column: 2 / 2;
-    grid-row: 1 / 2;
-    background-color: aqua;
-    border-bottom: 5px solid white;
-}
-
-.three {
-    grid-column: 1 / 2;
-    grid-row: 2 / 2;
-    background-color: aqua;
-    border-right: 5px solid white;
-}
-
-.four {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    background-color: aqua;
-    padding: 20px;
-    overflow-y: auto;
+:root {
+    --primary: #4ED7F1;
+    --secondary: #6FE6FC;
+    --light: #A8F1FF;
+    --warning: #FFFA8D;
+    --white: #fff;
+    --dark: #333;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+  }
+  
+  .container {
     display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 20px;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 220px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    box-shadow: 2px 0 8px rgba (0,0,0, 0.1);
+    animation: slideIn 0.7s ease forwards;
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+@keyframes slideIn {
+    to{
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
-
-.item {
-    width: 200px;
-    height: 120px;
-    background-color: white;
+  .nav-links {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .logout-container {
+    margin-top: auto;
+  }
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    gap: 10px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .logout-btn a{
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: white;
+    gap: 10px;
+    transition: background 0.4s ease, padding-left 0.4s;
+    text-decoration: none;
+  }
+  .logout-btn:hover{
+    background: rgba(255, 255, 255, 0.3);
+    padding-left: 10px;
     border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+  }
+  .sidebar .logo{
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  .sidebar nav{
+    display: flex;
+    flex-direction: column;
+  }
 
-.add_button {
-    margin: 10px;
-    background-color: white;
-    height: 30px;
-    width: 80px;
-}
-
-/*  */
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: white;
+    gap: 10px;
+    transition: background 0.4s ease, padding-left 0.4s;
+    text-decoration: none;
+  }
+  
+  .sidebar nav a:hover {
+    background-color: var(--secondary);
+    padding-left: 10px;
+    border-radius: 4px;
+  }
+  
+  .main {
+    flex: 1;
+    padding: 1rem 2rem;
+    background-color: #e6fafd;
+    overflow-y: auto;
+  }
+  
+  .top-cards {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .card {
+    background-color: var(--white);
+    border-left: 5px solid var(--primary);
+    padding: 1rem;
+    flex: 1;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .products {
+    margin-top: 2rem;
+  }
+  
+  .add-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .product-card {
+    background-color: var(--white);
+    height: 100px;
+    border-radius: 6px;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+  }
+  .product-card:hover{
+    background-color: var(--light);
+    padding-left: 10px;
+    border-radius: 4px;
+  }
