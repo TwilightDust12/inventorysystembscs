@@ -26,6 +26,7 @@
   
   .sidebar {
     width: 220px;
+    min-height: 100vh;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     padding: 1.5rem 1rem;
@@ -36,6 +37,7 @@
     animation: slideIn 0.7s ease forwards;
     transform: translateX(-100%);
     opacity: 0;
+    padding-top: 1rem;
   }
 @keyframes slideIn {
     to{
@@ -80,12 +82,20 @@
     border-radius: 4px;
   }
   .sidebar .logo{
-    font-size: 1.4rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding-left: 0.5rem;
+    height: 60px;           /* fix height */
+  display: flex;
+  align-items: center;    /* vertical center */
+  gap: 0.5rem;
+  padding-left: 0.5rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  user-select: none;
+  }
+  .sidebar .logo img{
+    width: auto;
+    display: block;
+    height: 400px;
+    margin-left: -120px;
   }
   .sidebar nav{
     display: flex;
@@ -109,7 +119,11 @@
     padding-left: 10px;
     border-radius: 4px;
   }
-  
+  .sidebar nav a.active {
+    background-color: var(--secondary);
+    padding-left: 10px;
+    border-radius: 4px;
+  }
   .main {
     flex: 1;
     padding: 1rem 2rem;
@@ -144,22 +158,35 @@
     border-radius: 4px;
     cursor: pointer;
     margin-bottom: 1rem;
+    position: relative;
+    z-index: 10;
   }
   
   .product-grid {
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
   }
   
   .product-card {
-    background-color: var(--white);
-    height: 100px;
-    border-radius: 6px;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    width: 250px;    
+    height: 200px;   
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 18px;
+    flex-wrap: wrap;
+    gap: 50px;
   }
   .product-card:hover{
     background-color: var(--light);
     padding-left: 10px;
     border-radius: 4px;
+    transition: all 0.4s ease;
   }

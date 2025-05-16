@@ -10,17 +10,19 @@
 <body>
     <div class="container">
 <aside class="sidebar">
-    <div class="logo">NO LOGO</div>
+    <div class="logo">
+      <img src="/inventorysystembscs/draft/SoFlow.svg" alt="Logo">
+    </div>
 <nav>
     <a href="#"><i class="fas fa-chart-line"></i> Dashboard</a>
-    <a href="#"><i class="fas fa-box"></i> Products</a>
+    <a href="#" class="active"><i class="fas fa-box"></i>Products</a>
     <a href="#"><i class="fas fa-sliders-h"></i> Adjustments</a>
     <a href="#"><i class="fas fa-shopping-cart"></i> Purchases</a>
     <a href="#"><i class="fas fa-file-invoice-dollar"></i> Sales</a>
 </nav>
 
 <div class="logout-container">
-    <a href="#" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
+    <a href="/inventorysystembscs/landing.html" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
         <i class="fas fa-sign-out-alt"></i>Log Out</a>
 </div>
 </aside>
@@ -34,21 +36,12 @@
             </section>
       
             <section class="products">
-              <button class="add-btn">Add</button>
+              <button class="add-btn">Add a Product</button>
               <div class="product-grid">
-
-                <div class="product-card"></div>
-                <div class="product-card"></div>
-                <div class="product-card"></div>
-                <div class="product-card"></div>
-                <div class="product-card"></div>
-                <div class="product-card"></div>
-                <div class="product-card"></div>
-                <div class="product-card"></div>
-                <div class="product-card"></div>
               </div>
             </section>
           </main>
         </div>
+        <script src="addCard.js"></script>
 </body>
 </html>
