@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <!-- <link rel="stylesheet" href="/draft/frontend/css/product.css"> -->
-     <link rel="stylesheet" href="../css/product.css">
+    <link rel="stylesheet" href="../css/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
@@ -14,19 +13,19 @@
       <aside class="sidebar">
 
           <div class="logo">
-            <img src="/draft/SoFlow.svg" alt="Logo">
+            <img src="/assets/SoFlow.svg" alt="Logo">
           </div>
 
         <nav>
-            <a href="#"><i class="fas fa-chart-line"></i> Dashboard</a>
-            <a href="#" class="active"><i class="fas fa-box"></i>Products</a>
-            <a href="#"><i class="fas fa-sliders-h"></i> Adjustments</a>
-            <a href="#"><i class="fas fa-shopping-cart"></i> Purchases</a>
-            <a href="#"><i class="fas fa-file-invoice-dollar"></i> Sales</a>
+            <a href="/pages/dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="/pages/Products.html" class="active"><i class="fas fa-box"></i>Products</a>
+            <a href="/pages/adjustment.html"><i class="fas fa-sliders-h"></i> Adjustments</a>
+            <a href="/pages/purhcases.html"><i class="fas fa-shopping-cart"></i> Purchases</a>
+            <a href="/pages/sales.html"><i class="fas fa-file-invoice-dollar"></i> Sales</a>
         </nav>
 
         <div class="logout-container">
-            <a href="landing.html" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
+            <a href="../pages/landing.html" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
                 <i class="fas fa-sign-out-alt"></i>Log Out</a>
         </div>
 
@@ -34,10 +33,10 @@
 
         <main class="main">
           <section class="top-cards">
-            <div class="card"><p>Revenue<br><strong>$1654.00</strong></p></div>
-            <div class="card"><p>Purchases<br><strong>$1160.00</strong></p></div>
-            <div class="card"><p>Sales Return<br><strong>$140.00</strong></p></div>
-            <div class="card"><p>Profit<br><strong>$704.00</strong></p></div>
+            <div class="card"><p>Revenue<br><strong id="revenueValue">$0.00</strong></p></div>
+            <div class="card"><p>Purchases<br><strong id="purchasesValue">$0.00</strong></p></div>
+            <div class="card"><p>Sales Return<br><strong id="salesReturnValue">$0.00</strong></p></div>
+            <div class="card"><p>Profit<br><strong id="profitValue">$0.00</strong></p></div>
           </section>
 
           <section class="products">
@@ -52,19 +51,14 @@
             <span class="close">&times;</span>
             <h3>Add Product</h3>
             <form>
-
               <label>Name:</label><br>
               <input type="text" name="name"><br><br>
-
               <label>Price:</label><br>
               <input type="number" name="price"><br><br>
-
               <label>Quantity:</label><br>
               <input type="number" name="quantity"></label><br><br>
-
               <label>Image URL:</label><br>
               <input type="text" name="image"></label><br><br>
-
               <button type="submit">Submit</button>
             </form>
           </div>
@@ -73,5 +67,24 @@
     </div>
 
     <script src="../js/addCard.js"></script>
+    <script>
+      // Fetch products and update top cards
+      function updateTopCards() {
+        fetch('/api/products/')
+          .then(res => res.json())
+          .then(products => {
+            let totalRevenue = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+            let purchases = totalRevenue * 0.7;      // Example logic
+            let salesReturn = totalRevenue * 0.08;   // Example logic
+            let profit = totalRevenue * 0.3;         // Example logic
+
+            document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('purchasesValue').textContent = `$${purchases.toFixed(2)}`;
+            document.getElementById('salesReturnValue').textContent = `$${salesReturn.toFixed(2)}`;
+            document.getElementById('profitValue').textContent = `$${profit.toFixed(2)}`;
+          });
+      }
+      updateTopCards();
+    </script>
 </body>
 </html>

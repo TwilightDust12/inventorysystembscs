@@ -2,20 +2,19 @@ import Product from "../models/product.js";
 import mongoose from "mongoose";
 
 export const addProduct = async (req, res) => {
+  console.log("Add product route hit");
     const product = req.body;
-    
-    if(!product.name || !product.price || !product.quantity || !product.image) {
+    console.log("Received product:", product); // Log incoming data
+    if(!product.name || !product.price || !product.quantity) {
         return res.status(400).json({success:false, message: "Provide all fields"});
     }
-
     const newProduct = new Product(product);
     try {
         await newProduct.save();
         res.status(201).json({success: true, data: newProduct});
-
     } catch(error) {
-        console.error("Error in Creating product", error.message);
-        res.status(500).json({success: false, message: "Server Error"});
+        console.error("Add product error (controller):", error); // <--- HERE
+        res.status(400).json({ success: false, message: "Failed to add product" });
     }
 };
 
@@ -38,10 +37,9 @@ export const deleteProduct = async (req, res) => {
 export const getProduct = async (req, res) => {
     try {
         const products = await Product.find({});
-        res.status(200).json({success: true, data: products})
+        res.status(200).json(products);
     } catch(error) {
-        console.log(error.message)
-        res.status(500).json({success: false, messasge: "Server Error"});
+        res.status(500).json({success: false, message: "Server Error"});
     } 
 };
 

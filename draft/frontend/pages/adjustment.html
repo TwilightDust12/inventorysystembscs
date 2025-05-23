@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adjustments</title>
+    <link rel="stylesheet" href="../css/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+      .adjust-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin-top: 2rem;
+      }
+      .adjust-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px #0001;
+        padding: 20px;
+        width: 250px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .adjust-card img {
+        max-width: 100px;
+        max-height: 100px;
+        object-fit: contain;
+        margin-bottom: 10px;
+      }
+      .adjust-card input[type="number"] {
+        width: 70px;
+        margin: 0 5px;
+        padding: 4px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+      }
+      .adjust-actions {
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+      .adjust-actions button {
+        padding: 6px 14px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .adjust-actions .save-btn {
+        background: var(--primary);
+        color: #fff;
+      }
+      .adjust-actions .delete-btn {
+        background: #ff4d4d;
+        color: #fff;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="logo">
+          <img src="/assets/SoFlow.svg" alt="Logo">
+        </div>
+        <nav>
+            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="Products.html"><i class="fas fa-box"></i>Products</a>
+            <a href="Adjustments.html" class="active"><i class="fas fa-sliders-h"></i> Adjustments</a>
+            <a href="/pages/purchases.html"><i class="fas fa-shopping-cart"></i> Purchases</a>
+            <a href="/pages/sales.html"><i class="fas fa-file-invoice-dollar"></i> Sales</a>
+        </nav>
+        <div class="logout-container">
+            <a href="../pages/landing.html" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
+                <i class="fas fa-sign-out-alt"></i>Log Out</a>
+        </div>
+      </aside>
+      <main class="main">
+        <h2 style="margin-bottom: 20px;">Adjust Products</h2>
+        <div class="adjust-list" id="adjustmentGrid"></div>
+      </main>
+    </div>
+    <script>
+      // Fetch products and render adjustment cards
+      function loadAdjustments() {
+        fetch('/api/products/')
+          .then(res => res.json())
+          .then(products => {
+            const grid = document.getElementById('adjustmentGrid');
+            grid.innerHTML = '';
+            products.forEach(product => {
+              grid.innerHTML += `
+                <div class="adjust-card" data-id="${product._id}">
+                  <img src="${product.image || ''}" alt="${product.name}">
+                  <h4>${product.name}</h4>
+                  <div>
+                    Price: $<input type="number" value="${product.price}" min="0" class="price-input">
+                  </div>
+                  <div>
+                    Qty: <input type="number" value="${product.quantity}" min="0" class="qty-input">
+                  </div>
+                  <div class="adjust-actions">
+                    <button class="save-btn">Save</button>
+                    <button class="delete-btn">Delete</button>
+                  </div>
+                </div>
+              `;
+            });
+
+            // Add event listeners for save and delete
+            document.querySelectorAll('.save-btn').forEach(btn => {
+              btn.onclick = function() {
+                const card = btn.closest('.adjust-card');
+                const id = card.getAttribute('data-id');
+                const price = card.querySelector('.price-input').value;
+                const quantity = card.querySelector('.qty-input').value;
+                fetch(`/api/products/${id}`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ price, quantity })
+                }).then(res => {
+                  if(res.ok) {
+                    alert("Product updated!");
+                    loadAdjustments();
+                  } else {
+                    alert("Failed to update product.");
+                  }
+                });
+              };
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+              btn.onclick = function() {
+                if(!confirm("Delete this product?")) return;
+                const card = btn.closest('.adjust-card');
+                const id = card.getAttribute('data-id');
+                fetch(`/api/products/${id}`, {
+                  method: "DELETE"
+                }).then(res => {
+                  if(res.ok) {
+                    alert("Product deleted!");
+                    loadAdjustments();
+                  } else {
+                    alert("Failed to delete product.");
+                  }
+                });
+              };
+            });
+          });
+      }
+      loadAdjustments();
+    </script>
+</body>
+</html>

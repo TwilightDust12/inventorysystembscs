@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+
+      <aside class="sidebar">
+
+          <div class="logo">
+            <img src="/assets/SoFlow.svg" alt="Logo">
+          </div>
+
+        <nav>
+            <a href="/pages/dashboard.html" class="active" ><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="/pages/Products.html" ><i class="fas fa-box"></i>Products</a>
+            <a href="/pages/adjustment.html"><i class="fas fa-sliders-h"></i> Adjustments</a>
+            <a href="/pages/purchases.html"><i class="fas fa-shopping-cart"></i> Purchases</a>
+            <a href="/pages/sales.html"><i class="fas fa-file-invoice-dollar"></i> Sales</a>
+        </nav>
+
+        <div class="logout-container">
+            <a href="../pages/landing.html" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
+                <i class="fas fa-sign-out-alt"></i>Log Out</a>
+        </div>
+
+      </aside>
+
+        <main class="main">
+          <section class="top-cards">
+            <div class="card"><p>Revenue<br><strong id="revenueValue">$0.00</strong></p></div>
+            <div class="card"><p>Purchases<br><strong id="purchasesValue">$0.00</strong></p></div>
+            <div class="card"><p>Sales Return<br><strong id="salesReturnValue">$0.00</strong></p></div>
+            <div class="card"><p>Profit<br><strong id="profitValue">$0.00</strong></p></div>
+          </section>
+
+          <div class="dashboard-grid">
+            <div class="dashboard-left">
+              <!-- This Week Sales & Purchases (Bar Chart Placeholder) -->
+              <div class="card">
+                <div style="font-weight:600;margin-bottom:8px;">This Week Sales & Purchases</div>
+                <canvas id="salesChart" width="400" height="180"></canvas>
+              </div>
+              <!-- Stock Alert Table -->
+              <div class="card">
+                <div style="font-weight:600;margin-bottom:8px;">Stock Alert</div>
+                <table class="stock-alert-table" id="stockAlertTable">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Alert</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Stock alert rows will be injected here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="dashboard-right">
+              <!-- Top Selling Products Pie Chart -->
+              <div class="card">
+                <div style="font-weight:600;margin-bottom:8px;">Top Selling Products</div>
+                <canvas id="pieChart" width="180" height="180"></canvas>
+              </div>
+              <!-- Top Products Table -->
+              <div class="card">
+                <div style="font-weight:600;margin-bottom:8px;">Top Products</div>
+                <table class="top-products-table" id="topProductsTable">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Top products rows will be injected here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Product Cards Section (copied from Products.html) -->
+          <section class="dashboard-products-section">
+            <div class="dashboard-products-title" style="font-size:1.2rem;font-weight:600;margin:2rem 0 1rem 0;color:var(--primary);">Products Overview</div>
+            <div class="dashboard-product-grid" id="dashboardProductGrid">
+              <!-- Product cards will be injected here -->
+            </div>
+          </section>
+        </main>
+
+    
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Fetch products and update dashboard sections
+    fetch('/api/products/')
+      .then(res => res.json())
+      .then(products => {
+        // Top cards
+        let totalRevenue = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+        let purchases = totalRevenue * 0.7;
+        let salesReturn = totalRevenue * 0.08;
+        let profit = totalRevenue * 0.3;
+        document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
+        document.getElementById('purchasesValue').textContent = `$${purchases.toFixed(2)}`;
+        document.getElementById('salesReturnValue').textContent = `$${salesReturn.toFixed(2)}`;
+        document.getElementById('profitValue').textContent = `$${profit.toFixed(2)}`;
+
+        // Stock Alert Table: Show products with quantity <= 10
+        const stockAlertBody = document.querySelector('#stockAlertTable tbody');
+        stockAlertBody.innerHTML = '';
+        products.filter(p => p.quantity <= 10).forEach(product => {
+          stockAlertBody.innerHTML += `
+            <tr>
+              <td>${product.name}</td>
+              <td>${product.quantity}</td>
+              <td><span class="alert-qty">${product.quantity}</span></td>
+            </tr>
+          `;
+        });
+
+        // Top Products Table: Show top 5 by quantity
+        const topProductsBody = document.querySelector('#topProductsTable tbody');
+        topProductsBody.innerHTML = '';
+        products
+          .sort((a, b) => b.quantity - a.quantity)
+          .slice(0, 5)
+          .forEach(product => {
+            topProductsBody.innerHTML += `
+              <tr>
+                <td>${product.name}</td>
+                <td>${product.quantity}</td>
+              </tr>
+            `;
+          });
+
+        // Product Cards Section
+        const productGrid = document.getElementById('dashboardProductGrid');
+        productGrid.innerHTML = '';
+        products.forEach(product => {
+          productGrid.innerHTML += `
+            <div class="dashboard-product-card">
+              <img src="${product.image || ''}" alt="${product.name}">
+              <div class="prod-name">${product.name}</div>
+              <div class="prod-price">Price: $${product.price}</div>
+              <div class="prod-qty">Qty: ${product.quantity}</div>
+            </div>
+          `;
+        });
+
+        // --- This Week Sales & Purchases Chart (Bar) ---
+        // For demo, generate 7 days of sales/purchases from products
+        const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+        const salesData = days.map(() => Math.floor(Math.random() * 2000 + 500));
+        const purchasesData = days.map(() => Math.floor(Math.random() * 2000 + 500));
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: days,
+            datasets: [
+              {
+                label: 'Sales',
+                data: salesData,
+                backgroundColor: 'rgba(78, 215, 241, 0.7)'
+              },
+              {
+                label: 'Purchases',
+                data: purchasesData,
+                backgroundColor: 'rgba(111, 230, 252, 0.7)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'top' } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+
+        // --- Top Selling Products Pie Chart ---
+        // Use top 5 products by quantity
+        const pieLabels = products
+          .sort((a, b) => b.quantity - a.quantity)
+          .slice(0, 5)
+          .map(p => p.name);
+        const pieData = products
+          .sort((a, b) => b.quantity - a.quantity)
+          .slice(0, 5)
+          .map(p => p.quantity);
+        const pieColors = [
+          'rgba(78, 215, 241, 0.8)',
+          'rgba(111, 230, 252, 0.8)',
+          'rgba(168, 241, 255, 0.8)',
+          'rgba(255, 250, 141, 0.8)',
+          'rgba(51, 51, 51, 0.8)'
+        ];
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        new Chart(pieCtx, {
+          type: 'pie',
+          data: {
+            labels: pieLabels,
+            datasets: [{
+              data: pieData,
+              backgroundColor: pieColors
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom' } }
+          }
+        });
+      });
+  </script>
+</body>
+</html>

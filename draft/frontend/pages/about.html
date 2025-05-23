@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About - StockOverflow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --primary: #4ED7F1;
+      --secondary: #6FE6FC;
+      --light: #A8F1FF;
+      --warning: #FFFA8D;
+      --white: #fff;
+      --dark: #333;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+    }
+  </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  </style>
+</head>
+<body class="bg-[var(--light)] min-h-screen flex flex-col">
+  <div class="flex-grow flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-lg max-w-8xl w-full mx-4 mt-10 mb-10 px-8 py-10">
+      <!-- Navbar -->
+      <header class="flex items-center justify-between px-2 py-4 mb-8">
+        <div class="flex items-center space-x-4">
+          <span class="text-3xl md:text-4xl font-extrabold text-[var(--primary)] tracking-tight drop-shadow-sm select-none">
+            Stock<span class="text-[var(--secondary)]">Over</span>Flow
+          </span>
+        </div>
+        <nav class="hidden md:flex space-x-8 font-semibold text-[var(--dark)]">
+          <a href="/pages/landing.html" class="hover:text-[var(--primary)] transition">Home</a>
+          <a href="/pages/features.html" class="hover:text-[var(--primary)] transition">Features</a>
+          <a href="/pages/about.html" class="hover:text-[var(--primary)] transition">About</a>
+          <a href="/pages/contact.html" class="hover:text-[var(--primary)] transition">Contact</a>
+        </nav>
+        <div class="flex space-x-3">
+          <a href="/pages/register.html">
+            <button class="px-5 py-2 rounded-lg bg-[var(--warning)] font-semibold hover:bg-yellow-400 transition">
+              Register
+            </button>
+          </a>
+          <a href="/pages/login.html">
+            <button class="px-5 py-2 rounded-lg border border-[var(--primary)] text-[var(--primary)] font-semibold hover:bg-[var(--primary)] hover:text-white transition">
+              Login
+            </button>
+          </a>
+        </div>
+      </header>
+      <!-- About Content -->
+      <section>
+        <h1 class="text-3xl md:text-4xl font-bold mb-6 text-[var(--primary)]">About StockOverflow</h1>
+        <p class="mb-6 text-lg">
+          Welcome to <span class="font-bold text-[var(--secondary)]">StockOverflow</span> — your smarter, simpler, and slightly over-engineered inventory management solution.
+        </p>
+        <p class="mb-6">
+          This platform was built by two extremely cooked (yet somehow still functioning) Computer Science students who decided to turn caffeine, chaos, and compiler errors into something genuinely useful. After countless sleepless nights, too many energy drinks, and at least one existential crisis each, we finally brought this idea to life.
+        </p>
+        <h2 class="text-2xl font-bold mt-8 mb-3 flex items-center gap-2">🔧 What We Built</h2>
+        <ul class="list-disc ml-8 mb-6 space-y-1">
+          <li>Keep real-time track of their stock levels</li>
+          <li>Simplify warehouse and product management</li>
+          <li>Gain insights with smart analytics</li>
+          <li>Empower teams with secure, multi-user access</li>
+        </ul>
+        <p class="mb-6">
+          Whether you're managing a startup’s supply closet or running a warehouse with thousands of items — our system helps you stay in control, stay efficient, and most importantly, stay sane.
+        </p>
+        <h2 class="text-2xl font-bold mt-8 mb-3 flex items-center gap-2">👨‍💻 Who We Are</h2>
+        <p class="mb-6">
+          We're just two students with a shared passion for clean code, user-friendly design, and solving real-world problems (usually under deadline pressure and the threat of academic burnout).
+        </p>
+        <p class="mb-6">
+          We built this system with modern web tools, clean UX, and a mission to make inventory management feel less like a chore — and more like a superpower.
+        </p>
+        <h2 class="text-2xl font-bold mt-8 mb-3 flex items-center gap-2">🚀 The Future</h2>
+        <ul class="list-disc ml-8 mb-6 space-y-1">
+          <li>AI-driven stock prediction</li>
+          <li>Mobile-friendly dashboards</li>
+          <li>Third-party integrations</li>
+          <li>More features that you didn’t know you needed (but will wonder how you lived without)</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer class="bg-[var(--primary)] text-[var(--white)] py-8 mt-10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+      <p class="text-sm">&copy; 2025 StockOverflow. All rights reserved.</p>
+      <div class="flex space-x-6"></div>
+    </div>
+  </footer>
+</body>
+</html>

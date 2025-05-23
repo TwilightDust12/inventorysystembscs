@@ -4,55 +4,37 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login Page</title>
-        <link rel="stylesheet" href="login.css">
+        <link rel="stylesheet" href="/css/login.css">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     </head>
     <body>
         <div class="container"> 
-            <div class="form-box Register">
-                <form action="#">
-                <div class="logo">
-                    <img src="logo.png" alt="Logo">
-                </div>
-                <div class="input-box">
-                    <i class='bx bx-user'></i>
-                    <input type="text" placeholder="Username" required>
-                    <label for="username">Username</label>
-                </div>
-                <div class="input-box">
-                    <i class='bx bx-envelope' ></i>
-                    <input type="password" placeholder="Password" required>
-                    <label for="password">Password</label>
-                </div>
-                <div class="input-box">
-                    <i class='bx bx-envelope' ></i>
-                    <input type="password"  placeholder= "Confirm Password" required>
-                    <label for="confirm-password">Confirm Password</label> 
-                </div>
-                    <button class="btn">Register</button>
-                    <i class='bx bxs-right-arrow LoginBtn'></i>
-                </form>
-            </div>
             <div class="form-box Login">
-                <form action="/inventorysystembscs/draft/Products.html" method="GET">
+                <form action="/login" method="POST">
                 <div class="logo">
-                    <img src="logo.png" alt="Logo">
+                    <img src="/assets/logo.png" alt="Logo">
                 </div>
                 <div class="input-box">
                     <i class='bx bx-user'></i>
-                    <input type="text" placeholder="Username" required>
+                    <input type="text" name="username" placeholder="Username" required>
                     <label for="username">Username</label>
                 </div>
                 <div class="input-box">
                     <i class='bx bx-envelope' ></i>
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" name="password" placeholder="Password" required>
                     <label for="password">Password</label>
                 </div>
                     <button class="btn">Login</button>
-                    <button class="btn">Forgot Password?</button>
-                    <i class='bx bxs-left-arrow RegisterBtn'></i>
+                    <div style="text-align:center; margin-top:1rem;">
+                        <a href="../pages/register.html">
+                            <button type="button" class="btn" style="background:#4ED7F1; color:#fff;">
+                                Don't have an account? Register
+                            </button>
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>      
-        <script src="login.js"></script>
+        <!-- <script src="/draft/frontend/js/login.js"></script> -->
     </body>
+</html>

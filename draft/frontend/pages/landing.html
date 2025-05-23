@@ -2,55 +2,126 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inventory System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StockOverflow - Inventory System</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-    </style>
+    :root {
+      --primary: #4ED7F1;
+      --secondary: #6FE6FC;
+      --light: #A8F1FF;
+      --warning: #FFFA8D;
+      --white: #fff;
+      --dark: #333;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+    }
+  </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  </style>
 </head>
-<body class="bg-[#A8F1FF] text-gray-800 font-sans">
-  <header class="bg-[#4ED7F1] shadow-md">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold">StockOverflow</h1>
-      <nav>
-        <ul class="flex space-x-6 text-sm font-medium">
-          <li><a href="#" class="hover:text-[#FFFA8D]">Home</a></li>
-          <li><a href="#" class="hover:text-[#FFFA8D]">Features</a></li>
-          <li><a href="#" class="hover:text-[#FFFA8D]">About</a></li>
-          <li><a href="#" class="hover:text-[#FFFA8D]">Contact</a></li>
-        </ul>
-      </nav>
+<body class="bg-[var(--light)] min-h-screen flex flex-col">
+  <div class="flex-grow flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-lg max-w-8xl w-full mx-4 mt-10 mb-10 px-11 py-8 min-h-[700px]">
+      <!-- Navbar -->
+      <header class="flex items-center justify-between px-10 py-6">
+        <div class="flex items-center space-x-4">
+        
+          <span class="text-3xl md:text-4xl font-extrabold text-[var(--primary)] tracking-tight drop-shadow-sm select-none">
+            Stock<span class="text-[var(--secondary)]">Over</span>Flow
+          </span>
+        </div>
+        <nav class="hidden md:flex space-x-8 font-semibold text-[var(--dark)]">
+          <a href="/pages/landing.html" class="hover:text-[var(--primary)] transition">Home</a>
+          <a href="/pages/features.html" class="hover:text-[var(--primary)] transition">Features</a>
+          <a href="/pages/about.html" class="hover:text-[var(--primary)] transition">About</a>
+          <a href="/pages/contact.html" class="hover:text-[var(--primary)] transition">Contact</a>
+        </nav>
+        <div class="flex space-x-3">
+          <a href="../pages/register.html">
+            <button class="px-5 py-2 rounded-lg bg-[var(--warning)] font-semibold hover:bg-yellow-400 transition">
+              Register
+            </button>
+          </a>
+          <a href="../pages/login.html">
+            <button class="px-5 py-2 rounded-lg border border-[var(--primary)] text-[var(--primary)] font-semibold hover:bg-[var(--primary)] hover:text-white transition">
+              Login
+            </button>
+          </a>
+        </div>
+      </header>
+      <!-- Hero Section -->
+      <section class="grid md:grid-cols-2 gap-8 items-center px-10 pb-10">
+        <!-- Left: Text -->
+        <div class="text-left">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4 text-[var(--dark)]">Smarter Inventory<br>Starts Here</h1>
+          <p class="text-lg mb-8 text-[var(--dark)]">Effortlessly track, manage, and optimize your inventory in real time. Whether you're overseeing a small shop or a large warehouse, our system helps you stay organized, improve efficiency, and make smarter decisions — all from one intuitive dashboard.</p>
+          <a href="#" class="inline-block bg-[var(--primary)] hover:bg-[var(--secondary)] text-white px-6 py-3 font-semibold rounded-xl shadow transition">Get Started</a>
+        </div>
+        <!-- Right: Illustration -->
+        <div class="flex justify-center">
+          <!-- Custom SVG Illustration using your palette -->
+          <svg width="320" height="260" viewBox="0 0 320 260" fill="none" xmlns="http://www.w3.org/2000/svg" class="max-h-72 w-auto">
+            <!-- Background shapes -->
+            <ellipse cx="160" cy="210" rx="120" ry="30" fill="#A8F1FF" />
+            <!-- Boxes -->
+            <rect x="60" y="120" width="50" height="60" rx="8" fill="#6FE6FC" stroke="#4ED7F1" stroke-width="3"/>
+            <rect x="210" y="100" width="50" height="80" rx="8" fill="#FFFA8D" stroke="#4ED7F1" stroke-width="3"/>
+            <rect x="135" y="70" width="50" height="110" rx="8" fill="#fff" stroke="#4ED7F1" stroke-width="3"/>
+            <!-- Inventory icons (simple) -->
+            <circle cx="85" cy="140" r="10" fill="#4ED7F1" />
+            <rect x="225" y="120" width="20" height="10" rx="2" fill="#A8F1FF" />
+            <ellipse cx="160" cy="100" rx="12" ry="8" fill="#6FE6FC" />
+            <!-- User figure (minimalist) -->
+            <circle cx="160" cy="60" r="14" fill="#4ED7F1" stroke="#333" stroke-width="2"/>
+            <rect x="152" y="74" width="16" height="28" rx="6" fill="#6FE6FC" />
+            <rect x="148" y="102" width="24" height="8" rx="4" fill="#FFFA8D" />
+            <!-- Decorative lines -->
+            <line x1="110" y1="150" x2="135" y2="120" stroke="#4ED7F1" stroke-width="2" />
+            <line x1="185" y1="120" x2="210" y2="140" stroke="#6FE6FC" stroke-width="2" />
+          </svg>
+        </div>
+      </section>
     </div>
-  </header>
+  </div>
 
-  <section class="py-20 bg-[#6FE6FC] text-center">
-    <div class="max-w-2xl mx-auto px-4">
-      <h2 class="text-4xl font-bold mb-4">Smarter Inventory Starts Here</h2>
-      <p class="text-lg mb-6">Track, manage, and optimize your stock with ease. Our system helps you stay organized and efficient.</p>
-      <a href="#" class="bg-[#FFFA8D] text-black px-6 py-3 font-semibold rounded-lg shadow hover:bg-yellow-300 transition">Get Started</a>
+  <!-- Features Section
+  <section class="py-20 bg-[var(--white)]">
+    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
+      <div
+        class="p-8 rounded-2xl bg-[var(--light)] shadow hover:shadow-lg transition"
+      >
+        <h3 class="text-xl font-bold mb-3 text-[var(--dark)]">Real-Time Tracking</h3>
+        <p class="text-gray-700">Monitor inventory levels instantly, from anywhere.</p>
+      </div>
+      <div
+        class="p-8 rounded-2xl bg-[var(--light)] shadow hover:shadow-lg transition"
+      >
+        <h3 class="text-xl font-bold mb-3 text-[var(--dark)]">Smart Analytics</h3>
+        <p class="text-gray-700">Get insights and trends to make smarter decisions.</p>
+      </div>
+      <div
+        class="p-8 rounded-2xl bg-[var(--light)] shadow hover:shadow-lg transition"
+      >
+        <h3 class="text-xl font-bold mb-3 text-[var(--dark)]">Multi-User Access</h3>
+        <p class="text-gray-700">Secure role-based access for your entire team.</p>
+      </div>
     </div>
-  </section>
+  </section> -->
 
-  <section class="py-16 bg-[#A8F1FF]">
-    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-center">
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
-        <h3 class="text-xl font-bold mb-2">Real-Time Tracking</h3>
-        <p>Monitor inventory levels instantly, anytime.</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
-        <h3 class="text-xl font-bold mb-2">Smart Analytics</h3>
-        <p>Gain insights and trends to make smarter decisions.</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition">
-        <h3 class="text-xl font-bold mb-2">Multi-User Access</h3>
-        <p>Give your team access with secure role-based logins.</p>
+  <!-- Footer -->
+  <footer class="bg-[var(--primary)] text-[var(--white)] py-8 mt-10">
+    <div
+      class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
+    >
+      <p class="text-sm">&copy; 2025 StockOverflow. All rights reserved.</p>
+      <div class="flex space-x-6">
       </div>
     </div>
-  </section>
-
-  <footer class="bg-[#4ED7F1] text-center py-6">
-    <p class="text-sm">&copy; 2025 StockOverflow. All rights reserved.</p>
   </footer>
 </body>
 </html>
