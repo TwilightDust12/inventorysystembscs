@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/", addProduct);
 
 //fund to delete 
-router.delete("/id", deleteProduct) ;
+router.delete("/:id", deleteProduct) ;
 
 //func to get
 router.get("/", getProduct);

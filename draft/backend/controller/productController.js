@@ -1,14 +1,14 @@
 import Product from "../models/product.js";
+import mongoose from "mongoose";
 
 export const addProduct = async (req, res) => {
     const product = req.body;
     
-    if(!product.name || !product.price || !product.image) {
+    if(!product.name || !product.price || !product.quantity || !product.image) {
         return res.status(400).json({success:false, message: "Provide all fields"});
     }
 
     const newProduct = new Product(product);
-
     try {
         await newProduct.save();
         res.status(201).json({success: true, data: newProduct});
