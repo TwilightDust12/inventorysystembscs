@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- <link rel="stylesheet" href="/draft/frontend/css/index.css"> -->
+     <link rel="stylesheet" href="../css/product.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+
+      <aside class="sidebar">
+
+          <div class="logo">
+            <img src="/draft/SoFlow.svg" alt="Logo">
+          </div>
+
+        <nav>
+            <a href="#"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="#" class="active"><i class="fas fa-box"></i>Products</a>
+            <a href="#"><i class="fas fa-sliders-h"></i> Adjustments</a>
+            <a href="#"><i class="fas fa-shopping-cart"></i> Purchases</a>
+            <a href="#"><i class="fas fa-file-invoice-dollar"></i> Sales</a>
+        </nav>
+
+        <div class="logout-container">
+            <a href="landing.html" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
+                <i class="fas fa-sign-out-alt"></i>Log Out</a>
+        </div>
+
+      </aside>
+
+        <main class="main">
+          <section class="top-cards">
+            <div class="card"><p>Revenue<br><strong>$1654.00</strong></p></div>
+            <div class="card"><p>Purchases<br><strong>$1160.00</strong></p></div>
+            <div class="card"><p>Sales Return<br><strong>$140.00</strong></p></div>
+            <div class="card"><p>Profit<br><strong>$704.00</strong></p></div>
+          </section>
+
+          <section class="products">
+            <button class="add-btn" id="addBtn">Add a Product</button>
+            <div class="product-grid"></div>
+          </section>
+        </main>
+
+        <!-- modal -->
+        <div id="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Add Product</h3>
+            <form>
+              <label>Name:</label><br>
+              <input type="text"><br><br>
+              <label>Quantity:</label><br>
+              <input type="number"><br><br>
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+
+    </div>
+
+    <script src="../js/addCard.js"></script>
+</body>
+</html>

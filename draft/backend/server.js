@@ -1,25 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
-import { connectDB } from "./config/db.js";
-import Product from "./models/product.js";
+import { connectDB } from "./config/dbConnect.js";
+import productRoutes from "./routes/router.js";
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.post("/products", async (req, res) => {
-    const product = req.body;
-    
-    if(!product.name || product.price || product.image) {
-        return res.status(400).json({success:false, message: "Provide all fields"});
-    }
+app.use(express.json());
 
-    const newProduct = new Product(product)
-});
+app.use("/api/products/", productRoutes)
 
-// console.log(process.env.MONGO_URI);
-
-app.listen(5000, () => {
+app.listen(PORT, () => {
     connectDB();
-    console.log("server started http://localhost:5000");
+    console.log("server started http://localhost:" + PORT);
 });
