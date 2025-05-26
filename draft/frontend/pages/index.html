@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Card</title>
+  <style>
+    .card {
+      height: 250px;
+      width: 250px;
+      background-color: cyan;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+    background-color: yellow;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    }
+
+
+    .content {
+      background-color: black;
+      height: 80px;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Align both top */
+      padding: 10px;
+      color: white;
+      gap: 10px;
+    }
+
+    .info-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .label {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    .price-tag {
+        background-color: yellow;
+        color: black;
+        height: 20px;
+        padding: 0 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 80px;
+        max-width: 50%;
+        width: fit-content;
+    }
+
+    .stock-count {
+      background-color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 20px;
+      width: 80px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .price-tag {
+      background-color: yellow;
+      color: black;
+    }
+
+    .stock-count {
+      background-color: red;
+    }
+
+    .image-placeholder {
+        background-color: deepskyblue;
+        height: 110px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    .image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="card">
+    <header>product name here</header>
+
+    <div class="image-placeholder">
+        <img src="../assets/SoFlow.svg" alt="Product Image" class="image" />
+    </div>
+    <div class="content">
+      <div class="info-block">
+        <div class="label">Price</div>
+        <div class="price-tag">$12.99</div>
+      </div>
+      <div class="info-block">
+        <div class="label">Stock</div>
+        <div class="stock-count">15</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

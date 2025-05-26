@@ -83,13 +83,13 @@
   }
   .sidebar .logo{
     height: 60px;           /* fix height */
-  display: flex;
-  align-items: center;    /* vertical center */
-  gap: 0.5rem;
-  padding-left: 0.5rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  user-select: none;
+    display: flex;
+    align-items: center;    /* vertical center */
+    gap: 0.5rem;
+    padding-left: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    user-select: none;
   }
   .sidebar .logo img{
     width: auto;
@@ -135,6 +135,15 @@
     display: flex;
     gap: 1rem;
     margin-bottom: 2rem;
+  }
+  
+  .rev-card {
+    background-color: var(--white);
+    border-left: 5px solid var(--primary);
+    padding: 1rem;
+    width: 15vw;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
   
   .card {
@@ -191,13 +200,13 @@
     border-radius: 4px;
     transition: all 0.4s ease;
   }
-  .product-card img {
+  /* .product-card img {
     max-width: 120px;
     max-height: 120px;
     object-fit: contain;
     display: block;
     margin: 0 auto 8px auto;
-  }
+  } */
 
   #modal {
       display: none;
@@ -223,3 +232,88 @@
       font-size: 20px;
       cursor: pointer;
     }
+
+    header {
+    background-color: yellow;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    }
+
+
+    .content {
+      background-color: black;
+      height: 80px;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Align both top */
+      padding: 10px;
+      color: white;
+      gap: 10px;
+    }
+
+    .info-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .label {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    .price-tag {
+        background-color: yellow;
+        color: black;
+        height: 20px;
+        padding: 0 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 80px;
+        max-width: 50%;
+        width: fit-content;
+    }
+
+    .stock-count {
+      background-color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 20px;
+      width: 80px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .price-tag {
+      background-color: yellow;
+      color: black;
+    }
+
+    .stock-count {
+      background-color: red;
+    }
+
+    .image-placeholder {
+        background-color: deepskyblue;
+        height: 110px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+    }
+
+    .image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}

@@ -24,7 +24,7 @@ router.post("/contact", async (req, res) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    res.send("Thank you for contacting us!");
+    res.send("Thank you for contacting us");
   } catch (err) {
     console.error("Email send error:", err);
     res.status(500).send("Failed to send message. Please try again later.");

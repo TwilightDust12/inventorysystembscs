@@ -16,17 +16,17 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // <-- Add this for form POST
+app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (must be before routes)
+// Serve static files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Serve landing page at root
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/pages/landing.html"));
+    res.sendFile(path.join(__dirname, "../frontend/pages/Products.html"));
 });
 
-// API/auth routes
+// API routes
 app.use("/", authRoutes);
 app.use("/", contactRoutes);
 app.use("/api/products/", productRoutes);
@@ -35,17 +35,4 @@ app.use("/api/products/", productRoutes);
 app.listen(PORT, () => {
     connectDB();
     console.log("Server started http://localhost:" + PORT);
-});
-
-// Error handling for adding product
-app.use((err, req, res, next) => {
-    if (err.message.includes("add product")) {
-        console.error("Add product error (controller):", err);
-        return res.status(400).json({ success: false, message: "Failed to add product" });
-    }
-    next(err);
-});
-
-productRoutes.get("/", (req, res) => {
-    // Your existing code for handling the request
 });

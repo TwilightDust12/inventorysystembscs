@@ -44,23 +44,44 @@ export const getProduct = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
-    const {id} = req.params;
+    // const {id} = req.params;
 
-    const product = req.body;
+    // const product = req.body;
 
-    // if (!product || Object.keys(product).length === 0) {
-    //     return res.status(400).json({success: false, message: "Request body is empty"});
+    // // if (!product || Object.keys(product).length === 0) {
+    // //     return res.status(400).json({success: false, message: "Request body is empty"});
+    // // }
+
+    // if(!mongoose.Types.ObjectId.isValid(id)) {
+    //     return res.status(404).json({success: false, message: "Invalid product id"})
     // }
 
-    if(!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({success: false, message: "Invalid product id"})
+    // try {
+    //     const updated_product = await Product.findByIdAndUpdate(id, product, {new: true});
+    //     res.status(200).json({success: true, data: updated_product});
+    // } catch (error) {
+    //     // console.log(error.message);
+    //     res.status(500).json({success: false, message: "Server Error"});
+    // }
+
+    const { quantity, revenue } = req.body;
+
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) return res.status(404).send("Product not found");
+
+    product.quantity = quantity;
+
+    // If `revenue` field is used, accumulate it
+    if (revenue) {
+      product.revenue = (product.revenue || 0) + revenue;
     }
 
-    try {
-        const updated_product = await Product.findByIdAndUpdate(id, product, {new: true});
-        res.status(200).json({success: true, data: updated_product});
-    } catch (error) {
-        // console.log(error.message);
-        res.status(500).json({success: false, message: "Server Error"});
-    }
+    await product.save();
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 };

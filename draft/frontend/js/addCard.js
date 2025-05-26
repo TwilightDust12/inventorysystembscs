@@ -1,35 +1,41 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//   const addBtn = document.querySelector(".add-btn");
-//   const productGrid = document.querySelector(".product-grid");
-
-//   addBtn.addEventListener("click", () => {
-//     const newCard = document.createElement("div");
-//     newCard.classList.add("product-card");
-//     newCard.textContent = "Placeholder Product";
-//     productGrid.appendChild(newCard);
-//   });
-// });
-
 // Fetch and display products
 function loadProducts() {
   fetch('/api/products/')
     .then(res => res.json())
     .then(products => {
       const grid = document.querySelector('.product-grid');
-      grid.innerHTML = '';
+      let html = '';
       products.forEach(product => {
-        grid.innerHTML += `
+        html += `
           <div class="product-card">
-            <h4>${product.name}</h4>
-            <p>Price: $${product.price}</p>
-            <p>Qty: ${product.quantity}</p>
-            <img src="${product.image}" alt="${product.name}" style="max-width:120px; max-height:120px; object-fit:contain;" />
+            <header>${product.name}</header>
+            <div class="image-placeholder">
+              <img src="${product.image}" alt="Product Image" class="image"/>
+            </div>
+            <div class="content">
+              <div class="info-block">
+                <div class="label">Price</div>
+                <div class="price-tag">$${product.price}</div>
+              </div>
+              <div class="info-block">
+                <div class="label">Stock</div>
+                <div class="stock-count">${product.quantity}</div>
+              </div>
+            </div>
+
+            
           </div>
         `;
       });
+      grid.innerHTML = html;
+    })
+    .catch(err => {
+      console.error('Failed to load products:', err);
     });
 }
 loadProducts();
+
+
 
 // Modal logic
 const modal = document.getElementById("modal");

@@ -32,17 +32,25 @@
       </aside>
 
         <main class="main">
+
           <section class="top-cards">
-            <div class="card"><p>Revenue<br><strong id="revenueValue">$0.00</strong></p></div>
-            <div class="card"><p>Purchases<br><strong id="purchasesValue">$0.00</strong></p></div>
-            <div class="card"><p>Sales Return<br><strong id="salesReturnValue">$0.00</strong></p></div>
-            <div class="card"><p>Profit<br><strong id="profitValue">$0.00</strong></p></div>
+            <div class="rev-card"><p>Revenue<br><strong id="revenueValue">$0.00</strong></p></div>
+            <!-- <div class="card"><p>Purchases<br><strong id="purchasesValue">$0.00</strong></p></div> -->
+            <!-- <div class="card"><p>Sales Return<br><strong id="salesReturnValue">$0.00</strong></p></div> -->
+            <!-- <div class="card"><p>Profit<br><strong id="profitValue">$0.00</strong></p></div> -->
           </section>
 
           <section class="products">
             <button class="add-btn" id="addBtn">Add a Product</button>
+
+            <!-- <button type="submit">Search</button>
+            <input type="text" id="searchInput" placeholder="Search products..." /> -->
+            
             <div class="product-grid"></div>
           </section>
+
+          
+
         </main>
 
         <!-- modal -->
@@ -67,23 +75,23 @@
     </div>
 
     <script src="../js/addCard.js"></script>
+
     <script>
       // Fetch products and update top cards
       function updateTopCards() {
         fetch('/api/products/')
           .then(res => res.json())
           .then(products => {
-            let totalRevenue = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
-            let purchases = totalRevenue * 0.7;      // Example logic
-            let salesReturn = totalRevenue * 0.08;   // Example logic
-            let profit = totalRevenue * 0.3;         // Example logic
+            let totalRevenue = products.reduce((sum, p) => sum + (p.revenue || 0), 0);
+            // let purchases = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+            // let profit = totalRevenue - purchases;
 
             document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
-            document.getElementById('purchasesValue').textContent = `$${purchases.toFixed(2)}`;
-            document.getElementById('salesReturnValue').textContent = `$${salesReturn.toFixed(2)}`;
-            document.getElementById('profitValue').textContent = `$${profit.toFixed(2)}`;
+            // document.getElementById('purchasesValue').textContent = `$${purchases.toFixed(2)}`;
+            // document.getElementById('profitValue').textContent = `$${profit.toFixed(2)}`;
           });
       }
+
       updateTopCards();
     </script>
 </body>

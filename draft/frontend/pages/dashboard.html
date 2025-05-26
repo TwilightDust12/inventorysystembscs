@@ -33,19 +33,20 @@
 
         <main class="main">
           <section class="top-cards">
-            <div class="card"><p>Revenue<br><strong id="revenueValue">$0.00</strong></p></div>
-            <div class="card"><p>Purchases<br><strong id="purchasesValue">$0.00</strong></p></div>
-            <div class="card"><p>Sales Return<br><strong id="salesReturnValue">$0.00</strong></p></div>
-            <div class="card"><p>Profit<br><strong id="profitValue">$0.00</strong></p></div>
+            <div class="rev-card"><p>Revenue<br><strong id="revenueValue">$0.00</strong></p></div>
+            <!-- <div class="card"><p>Purchases<br><strong id="purchasesValue">$0.00</strong></p></div> -->
+            <!-- <div class="card"><p>Sales Return<br><strong id="salesReturnValue">$0.00</strong></p></div> -->
+            <!-- <div class="card"><p>Profit<br><strong id="profitValue">$0.00</strong></p></div> -->
           </section>
 
           <div class="dashboard-grid">
             <div class="dashboard-left">
-              <!-- This Week Sales & Purchases (Bar Chart Placeholder) -->
+              <!-- This Week Revenue Chart-->
               <div class="card">
-                <div style="font-weight:600;margin-bottom:8px;">This Week Sales & Purchases</div>
+                <div style="font-weight:600;margin-bottom:8px;">This Weeks Revenue</div>
                 <canvas id="salesChart" width="400" height="180"></canvas>
               </div>
+
               <!-- Stock Alert Table -->
               <div class="card">
                 <div style="font-weight:600;margin-bottom:8px;">Stock Alert</div>
@@ -62,6 +63,7 @@
                   </tbody>
                 </table>
               </div>
+              
             </div>
             <div class="dashboard-right">
               <!-- Top Selling Products Pie Chart -->
@@ -100,22 +102,23 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
   <script>
     // Fetch products and update dashboard sections
     fetch('/api/products/')
       .then(res => res.json())
       .then(products => {
         // Top cards
-        let totalRevenue = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
-        let purchases = totalRevenue * 0.7;
-        let salesReturn = totalRevenue * 0.08;
-        let profit = totalRevenue * 0.3;
-        document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
-        document.getElementById('purchasesValue').textContent = `$${purchases.toFixed(2)}`;
-        document.getElementById('salesReturnValue').textContent = `$${salesReturn.toFixed(2)}`;
-        document.getElementById('profitValue').textContent = `$${profit.toFixed(2)}`;
+        let totalRevenue = products.reduce((sum, p) => sum + (p.revenue || 0), 0);
+        // let purchases = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+        // let profit = totalRevenue - purchases;
+        // let profit = Math.max(0, totalRevenue - purchases);
 
-        // Stock Alert Table: Show products with quantity <= 10
+        document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
+        // document.getElementById('purchasesValue').textContent = `$${purchases.toFixed(2)}`;
+        // document.getElementById('profitValue').textContent = `$${profit.toFixed(2)}`;
+
+        // Stock Alert
         const stockAlertBody = document.querySelector('#stockAlertTable tbody');
         stockAlertBody.innerHTML = '';
         products.filter(p => p.quantity <= 10).forEach(product => {
@@ -128,7 +131,7 @@
           `;
         });
 
-        // Top Products Table: Show top 5 by quantity
+        // Top Products 
         const topProductsBody = document.querySelector('#topProductsTable tbody');
         topProductsBody.innerHTML = '';
         products
@@ -157,11 +160,17 @@
           `;
         });
 
-        // --- This Week Sales & Purchases Chart (Bar) ---
-        // For demo, generate 7 days of sales/purchases from products
+        //Revenue Chart
         const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-        const salesData = days.map(() => Math.floor(Math.random() * 2000 + 500));
-        const purchasesData = days.map(() => Math.floor(Math.random() * 2000 + 500));
+        const todayIndex = new Date().getDay(); // Sunday = 0, Monday = 1, etc.
+
+        const adjustedIndex = (todayIndex + 6) % 7;
+
+        const dailyRevenue = Array(7).fill(0);
+        dailyRevenue[adjustedIndex] = totalRevenue;
+
+        const purchasesData = Array(7).fill(0);
+
         const ctx = document.getElementById('salesChart').getContext('2d');
         new Chart(ctx, {
           type: 'bar',
@@ -169,8 +178,8 @@
             labels: days,
             datasets: [
               {
-                label: 'Sales',
-                data: salesData,
+                label: 'Revenue',
+                data: dailyRevenue,
                 backgroundColor: 'rgba(78, 215, 241, 0.7)'
               },
               {
@@ -187,16 +196,15 @@
           }
         });
 
-        // --- Top Selling Products Pie Chart ---
-        // Use top 5 products by quantity
-        const pieLabels = products
-          .sort((a, b) => b.quantity - a.quantity)
-          .slice(0, 5)
-          .map(p => p.name);
-        const pieData = products
-          .sort((a, b) => b.quantity - a.quantity)
-          .slice(0, 5)
-          .map(p => p.quantity);
+
+        //Pie chart
+        const topSelling = products
+          .filter(p => p.revenue && p.revenue > 0) 
+          .sort((a, b) => b.revenue - a.revenue)
+          .slice(0, 5);
+
+        const pieLabels = topSelling.map(p => p.name);
+        const pieData = topSelling.map(p => p.revenue);
         const pieColors = [
           'rgba(78, 215, 241, 0.8)',
           'rgba(111, 230, 252, 0.8)',
@@ -204,6 +212,7 @@
           'rgba(255, 250, 141, 0.8)',
           'rgba(51, 51, 51, 0.8)'
         ];
+
         const pieCtx = document.getElementById('pieChart').getContext('2d');
         new Chart(pieCtx, {
           type: 'pie',
@@ -216,9 +225,19 @@
           },
           options: {
             responsive: true,
-            plugins: { legend: { position: 'bottom' } }
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `${context.label}: $${context.raw.toFixed(2)}`;
+                  }
+                }
+              }
+            }
           }
         });
+
       });
   </script>
 </body>
