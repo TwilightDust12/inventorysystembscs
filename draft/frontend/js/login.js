@@ -1,19 +1,13 @@
-const Login=document.querySelector('.Login');
-const LoginBtn=document.querySelector('.LoginBtn');
-const Register=document.querySelector('.Register');
-const RegisterBtn=document.querySelector('.RegisterBtn');
-LoginBtn.addEventListener('click',()=>{
-Login.classList.add('active');
-Register.classList.add('active');
-})
-RegisterBtn.addEventListener('click',()=>{
-    Login.classList.remove('active');
-    Register.classList.remove('active');
-})
-if(users[username] && users[username] === password) {
-  alert("Login successful!");
-  window.location.href = 'draft/Products.html'; 
-} else {
-  alert("Invalid username or password");
-}
-// 
+const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("success") === "true") {
+    const container = document.querySelector(".form-box");
+    const successMessage = document.createElement("div");
+    successMessage.textContent = "User successfully registered!";
+    successMessage.style.backgroundColor = "#4CAF50"; /* Green background */
+    successMessage.style.color = "white"; /* White text */
+    successMessage.style.padding = "10px";
+    successMessage.style.marginBottom = "15px";
+    successMessage.style.textAlign = "center";
+    successMessage.style.borderRadius = "5px";
+    container.prepend(successMessage); // Add the message at the top of the form
+  }

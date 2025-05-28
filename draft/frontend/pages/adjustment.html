@@ -11,24 +11,66 @@
         display: flex;
         flex-wrap: wrap;
         gap: 24px;
+        justify-content: center;
         margin-top: 2rem;
       }
       .adjust-card {
         background: #fff;
         border-radius: 12px;
-        box-shadow: 0 2px 8px #0001;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         padding: 20px;
         width: 250px;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 10px;
       }
-      .adjust-card img {
-        max-width: 100px;
-        max-height: 100px;
-        object-fit: contain;
+      .adjust-card h4 {
+        font-size: 1.2rem;
+        font-weight: bold;
         margin-bottom: 10px;
+      }
+      .image-placeholder {
+        background-color: deepskyblue;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+    }
+      .image-placeholder img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; 
+        background-color: transparent; 
+      }
+      .adjust-info {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 10px;
+      }
+      .price, .stock {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+      .price-tag {
+        background: yellow;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .stock-count {
+        background: red;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
       }
       .adjust-card input[type="number"] {
         width: 70px;
@@ -58,6 +100,17 @@
         background: #ff4d4d;
         color: #fff;
       }
+      .price-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 5px; 
+      }
+
+      .currency-symbol {
+        font-weight: bold;
+        color: #333; 
+      }
+      
     </style>
 </head>
 <body>
@@ -70,8 +123,8 @@
             <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
             <a href="Products.html"><i class="fas fa-box"></i>Products</a>
             <a href="Adjustments.html" class="active"><i class="fas fa-sliders-h"></i> Adjustments</a>
-            <a href="/pages/purchases.html"><i class="fas fa-shopping-cart"></i> Purchases</a>
-            <a href="/pages/sales.html"><i class="fas fa-file-invoice-dollar"></i> Sales</a>
+            <!-- <a href="/pages/purchases.html"><i class="fas fa-shopping-cart"></i> Purchases</a>
+            <a href="/pages/sales.html"><i class="fas fa-file-invoice-dollar"></i> Sales</a> -->
         </nav>
         <div class="logout-container">
             <a href="../pages/landing.html" class="logout-btn" onclick="return confirm('Are you sure you want to logout?')">
@@ -80,7 +133,61 @@
       </aside>
       <main class="main">
         <h2 style="margin-bottom: 20px;">Adjust Products</h2>
-        <div class="adjust-list" id="adjustmentGrid"></div>
+        <div class="adjust-list" id="adjustmentGrid">
+          <div class="adjust-card">
+            <h4>cocaine</h4>
+            <div class="image-placeholder">
+              <img src="https://via.placeholder.com/100?text=Product+Image" alt="Product Image">
+            </div>
+            <div class="adjust-info">
+              <div class="price">
+                <span class="price-tag">Price</span>
+                <div class="price-input-wrapper">
+                  <span class="currency-symbol">$</span>
+                  <input type="number" value="20000000" min="0" class="price-input">
+                </div>
+              </div>
+              <div class="stock">
+                <span>Stock</span>
+                <span class="stock-count">1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="adjust-card">
+            <h4>shabu</h4>
+            <div class="image-placeholder">
+              <img src="https://via.placeholder.com/400?text=Product+Image" alt="Product Image">
+            </div>
+            <div class="adjust-info">
+              <div class="price">
+                <span>Price</span>
+                <span class="price-tag">$50000</span>
+              </div>
+              <div class="stock">
+                <span>Stock</span>
+                <span class="stock-count">2</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="adjust-card">
+            <h4>cocaine</h4>
+            <div class="image-placeholder">
+              <img src="https://via.placeholder.com/100?text=Product+Image" alt="Product Image">
+            </div>
+            <div class="adjust-info">
+              <div class="price">
+                <span>Price</span>
+                <span class="price-tag">$50000</span>
+              </div>
+              <div class="stock">
+                <span>Stock</span>
+                <span class="stock-count">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
     <script>
@@ -94,13 +201,22 @@
             products.forEach(product => {
               grid.innerHTML += `
                 <div class="adjust-card" data-id="${product._id}">
-                  <img src="${product.image || ''}" alt="${product.name}">
-                  <h4>${product.name}</h4>
-                  <div>
-                    Price: $<input type="number" value="${product.price}" min="0" class="price-input">
+                  <div class="image-placeholder">
+                    <img src="${product.image || ''}" alt="${product.name}">
                   </div>
-                  <div>
-                    Qty: <input type="number" value="${product.quantity}" min="0" class="qty-input">
+                  <h4>${product.name}</h4>
+                  <div class="adjust-info">
+                    <div class="price">
+                      <span class="price-tag">Price</span>
+                      <div class="price-input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" value="${product.price}" min="0" class="price-input">
+                      </div>
+                    </div>
+                    <div class="stock">
+                      <span class="stock-count">Qty</span>
+                      <input type="number" value="${product.quantity}" min="0" class="qty-input">
+                    </div>
                   </div>
                   <div class="adjust-actions">
                     <button class="save-btn">Save</button>

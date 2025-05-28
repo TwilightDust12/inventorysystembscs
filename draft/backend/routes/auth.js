@@ -6,18 +6,26 @@ const router = express.Router();
 
 // Register route
 router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, confirmPassword } = req.body;
+
+  if (password !== confirmPassword) {
+    return res.status(400).send("Passwords do not match.");
+  }
+
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).send("Username already exists. Please choose another.");
+      return res.status(400).send("Username already exists.");
     }
-    const hash = await bcrypt.hash(password, 10); // <-- Use await here
+
+    const hash = await bcrypt.hash(password, 10);
     await User.create({ username, password: hash });
-    res.redirect("/pages/login.html");
+
+    // Redirect to the register page with a success query parameter
+    res.redirect("/pages/register.html?success=true");
   } catch (err) {
-    console.error("Registration error:", err);
-    res.status(400).send("Registration failed. Please try again.");
+    console.error(err);
+    res.status(500).send("Registration failed.");
   }
 });
 

@@ -26,8 +26,8 @@
                 </div>
                 <div class="input-box">
                     <i class='bx bx-envelope' ></i>
-                    <input type="password" name="confirm-password" placeholder="Confirm Password" required>
-                    <label for="confirm-password">Confirm Password</label> 
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+                    <label for="confirmPassword">Confirm Password</label> 
                 </div>
                 <button class="btn">Register</button>
                 <div style="text-align:center; margin-top:1rem;">
@@ -41,5 +41,22 @@
         </div>
     </div>
     <!-- <script src="/draft/frontend/js/login.js"></script> -->
+
+    <!-- <script>
+        const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("success") === "true") {
+    const container = document.querySelector(".form-box");
+    const successMessage = document.createElement("div");
+    successMessage.textContent = "User successfully registered!";
+    successMessage.style.backgroundColor = "#4CAF50"; /* Green background */
+    successMessage.style.color = "white"; /* White text */
+    successMessage.style.padding = "10px";
+    successMessage.style.marginBottom = "15px";
+    successMessage.style.textAlign = "center";
+    successMessage.style.borderRadius = "5px";
+    container.prepend(successMessage); 
+    successMessage.className = "success-message";
+  }
+    </script> -->
 </body>
 </html>

@@ -234,7 +234,7 @@
     }
 
     header {
-    background-color: yellow;
+    
     height: 40px;
     display: flex;
     justify-content: center;
@@ -244,14 +244,14 @@
 
 
     .content {
-      background-color: black;
+      
       height: 80px;
       margin-top: auto;
       display: flex;
       justify-content: space-between;
       align-items: flex-start; /* Align both top */
       padding: 10px;
-      color: white;
+      color: var(--dark);
       gap: 10px;
     }
 

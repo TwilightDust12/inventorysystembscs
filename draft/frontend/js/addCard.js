@@ -60,6 +60,15 @@ form.onsubmit = async (e) => {
     image: formData.get("image")
   };
 
+  if (data.price <= 0 || data.quantity < 0) {
+    alert("Price must be greater than 0 and quantity cannot be negative.");
+    return;
+  }
+  if (!data.name || !data.price || !data.quantity) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
   // Send POST request to API
   const res = await fetch('/api/products/', {
     method: "POST",
