@@ -294,3 +294,129 @@
     color: #666;
     font-size: 0.98em;
   }
+
+.stock-alert-table td.no-data,
+.top-products-table td.no-data {
+  padding: 15px 10px !important;
+  border-bottom: none !important;
+  text-align: center !important;
+  color: #999 !important;
+  font-style: italic !important;
+  font-weight: normal !important;
+}
+.no-products-message {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  padding: 40px;
+}
+
+.product-card {
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* center all content vertically */
+    font-size: 18px;
+    gap: 10px;
+    transition: all 0.5s ease;
+  }
+  .product-card:hover{
+    background-color: var(--light);
+    padding-left: 10px;
+    border-radius: 4px;
+    transition: all 0.4s ease;
+  }
+  /* .product-card img {
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 8px auto;
+  } */
+
+header {
+    
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    }
+
+    .image-placeholder {
+        background-color: deepskyblue;
+        height: 110px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-weight: bold;
+    }
+.image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.content {
+      
+      height: 80px;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Align both top */
+      padding: 10px;
+      color: var(--dark);
+      gap: 10px;
+    }
+
+    .info-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+.label {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    .price-tag {
+        background-color: yellow;
+        color: black;
+        height: 20px;
+        padding: 0 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 80px;
+        max-width: 50%;
+        width: fit-content;
+    }
+
+    .stock-count {
+      background-color: red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 20px;
+      width: 80px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .price-tag {
+      background-color: yellow;
+      color: black;
+    }
+
+    .stock-count {
+      background-color: red;
+    }

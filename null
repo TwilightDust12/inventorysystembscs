@@ -1,0 +1,255 @@
+<script>
+    let salesChart; // Declare this globally so it can be reused
+    let pieChart;
+
+    document.getElementById('resetRevenueBtn').addEventListener('click', () => {
+      if (confirm("Are you sure you want to reset all revenue data? This cannot be undone.")) {
+        fetch('/api/sales', {
+          method: 'DELETE'
+        })
+        .then(res => {
+          if (res.ok) {
+            alert("Revenue reset successful.");
+            document.getElementById('revenueValue').textContent = `$0.00`;
+
+            // Reset bar chart
+            if (salesChart) {
+              salesChart.data.datasets.forEach(ds => {
+                ds.data = Array(7).fill(0);
+              });
+              salesChart.update();
+            }
+
+            // Reset pie chart with animation
+            if (pieChart) {
+              pieChart.data.labels = ['No Sales'];
+              pieChart.data.datasets = [{
+                data: [1],
+                backgroundColor: ['#ccc']
+              }];
+              pieChart.options.plugins.tooltip.enabled = false;
+              pieChart.update(); // 👈 this triggers the animation
+            }
+
+          } else {
+            alert("Failed to reset revenue.");
+          }
+        });
+      }
+    });
+
+    //Refreshes revenue card
+    fetch('/api/sales/').then(res => res.json()).then(sales => {
+      let totalRevenue = sales.reduce((sum, p) => sum + (p.revenue || 0), 0);
+      document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
+    });
+
+    //charts and tables
+    fetch('/api/products/')
+      .then(res => res.json())
+      .then(products => {
+
+        // Stock Alert
+        const stockAlertBody = document.querySelector('#stockAlertTable tbody');
+        stockAlertBody.innerHTML = '';
+
+        products.filter(p => p.quantity <= 10).forEach(product => {
+          stockAlertBody.innerHTML += `
+            <tr>
+              <td>${product.name}</td>
+              <td>${product.quantity}</td>
+              <td><span class="alert-qty">${product.quantity}</span></td>
+            </tr>
+          `;
+        });
+
+        // Top Products 
+        const topProductsBody = document.querySelector('#topProductsTable tbody');
+        topProductsBody.innerHTML = '';
+
+        products
+          .sort((a, b) => b.quantity - a.quantity)
+          .slice(0, 5)
+          .forEach(product => {
+            topProductsBody.innerHTML += `
+              <tr>
+                <td>${product.name}</td>
+                <td>${product.quantity}</td>
+              </tr>
+            `;
+          });
+
+        // Product Cards Section
+        const productGrid = document.getElementById('dashboardProductGrid');
+        productGrid.innerHTML = '';
+
+        products.forEach(product => {
+          productGrid.innerHTML += `
+            <div class="dashboard-product-card">
+              <img src="${product.image || ''}" alt="${product.name}">
+              <div class="prod-name">${product.name}</div>
+              <div class="prod-price">Price: $${product.price}</div>
+              <div class="prod-qty">Qty: ${product.quantity}</div>
+            </div>
+          `;
+        });
+
+        //Revenue Chart
+        fetch('/api/sales/weekly')
+      .then(res => res.json())
+      .then(data => {
+        const dailyRevenue = Array(7).fill(0);
+        const purchasesData = Array(7).fill(0);
+
+        data.forEach(day => {
+          const index = (day._id + 5) % 7; // Adjust Mongo day to JS (0=Mon)
+          dailyRevenue[index] = day.totalRevenue;
+          purchasesData[index] = day.totalPurchases;
+        });
+
+        const ctx = document.getElementById('salesChart').getContext('2d');
+
+        // 🔄 Save to global variable
+        salesChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+            datasets: [
+              {
+                label: 'Revenue',
+                data: dailyRevenue,
+                backgroundColor: 'rgba(78, 215, 241, 0.7)'
+              },
+              {
+                label: 'Purchases',
+                data: purchasesData,
+                backgroundColor: 'rgba(111, 230, 252, 0.7)'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { position: 'top' } },
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+    });
+
+//Pie chart
+Promise.all([
+  fetch('/api/sales').then(res => res.json()),
+  fetch('/api/products').then(res => res.json())
+]).then(([sales, products]) => {
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+
+  if (sales.length === 0) {
+    // Default pie chart when no sales exist
+    new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['No Sales'],
+        datasets: [{
+          data: [1],
+          backgroundColor: ['#ccc']
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          animateScale: true
+        },
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: { enabled: false }
+        }
+      }
+    });
+    return;
+  }
+
+  // Aggregate revenue per productId
+  const revenueMap = {};
+  sales.forEach(sale => {
+    if (!revenueMap[sale.productId]) {
+      revenueMap[sale.productId] = 0;
+    }
+    revenueMap[sale.productId] += sale.revenue;
+  });
+
+  const topSelling = Object.entries(revenueMap)
+    .map(([productId, revenue]) => {
+      const product = products.find(p => p._id === productId);
+      return product ? { name: product.name, revenue } : null;
+    })
+    .filter(p => p && p.revenue > 0)
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 5);
+
+  if (topSelling.length === 0) {
+    // If all sales have 0 revenue, show default
+    new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['No Revenue'],
+        datasets: [{
+          data: [1],
+          backgroundColor: ['#ccc']
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          animateScale: true
+        },
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: { enabled: false }
+        }
+      }
+    });
+    return;
+  }
+
+  const pieLabels = topSelling.map(p => p.name);
+  const pieData = topSelling.map(p => p.revenue);
+  const pieColors = [
+    'rgba(78, 215, 241, 0.8)',
+    'rgba(111, 230, 252, 0.8)',
+    'rgba(168, 241, 255, 0.8)',
+    'rgba(255, 250, 141, 0.8)',
+    'rgba(51, 51, 51, 0.8)'
+  ];
+
+  pieChart = new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: pieLabels,
+      datasets: [{
+        data: pieData,
+        backgroundColor: pieColors
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        animateScale: true
+      },
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.label}: $${context.raw.toFixed(2)}`;
+            }
+          }
+        }
+      }
+    }
+  });
+});
+
+
+
+
+      });
+  </script>

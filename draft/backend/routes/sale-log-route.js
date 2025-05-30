@@ -48,5 +48,14 @@ router.get('/api/sales', async (req, res) => {
   }
 });
 
+router.delete('/api/sales', async (req, res) => {
+  try {
+    await Sale.deleteMany({});
+    res.status(200).json({ message: 'All sales deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 export default router;
