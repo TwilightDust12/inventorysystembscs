@@ -79,7 +79,7 @@
     <script>
       // Fetch products and update top cards
       function updateTopCards() {
-        fetch('/api/sales/').then(res => res.json()).then(sales => {
+        fetch('../api/sales/').then(res => res.json()).then(sales => {
       let totalRevenue = sales.reduce((sum, p) => sum + (p.revenue || 0), 0);
       document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
     });

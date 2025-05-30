@@ -42,6 +42,7 @@ router.get('/api/sales/weekly', async (req, res) => {
 router.get('/api/sales', async (req, res) => {
   try {
     const sales = await Sale.find();
+    res.set("Cache-Control", "no-cache, no-store, must-revalidate"); 
     res.json(sales);
   } catch (err) {
     res.status(500).json({ error: err.message });
