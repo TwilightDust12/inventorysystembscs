@@ -9,18 +9,27 @@ router.delete("/:id", deleteProduct);
 router.get("/", getProduct);
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const price = Number(req.body.price);
-  const quantity = Number(req.body.quantity);
+  const { price, quantity } = req.body;
+
+  console.log("Received PUT request for product:", id);
+  console.log("Data to update:", { price, quantity });
 
   try {
-    const updated = await Product.findByIdAndUpdate(
+    const updatedProduct = await Product.findByIdAndUpdate(
       id,
       { $set: { price, quantity } },
       { new: true }
     );
-    if (!updated) return res.status(404).send("Product not found");
-    res.json(updated);
+
+    if (!updatedProduct) {
+      console.log("Product not found:", id);
+      return res.status(404).send("Product not found");
+    }
+
+    console.log("Product updated successfully:", updatedProduct);
+    res.json(updatedProduct);
   } catch (err) {
+    console.error("Error updating product:", err);
     res.status(500).send("Failed to update product");
   }
 });

@@ -1,5 +1,5 @@
 import express from "express";
-import Sale from "../models/sale.js"; // Ensure this is your Mongoose model for sales
+import Sale from "../models/sale-logs.js"; // Ensure this is your Mongoose model for sales
 
 const router = express.Router();
 

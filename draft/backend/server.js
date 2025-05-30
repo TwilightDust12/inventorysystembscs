@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // Serve landing page at root
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/pages/Products.html"));
+    res.sendFile(path.join(__dirname, "../frontend/pages/login.html"));
 });
 
 // API routes

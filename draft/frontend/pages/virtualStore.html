@@ -137,33 +137,6 @@
             selectedProduct = null;
         }
 
-        // function confirmBuy() {
-        //     const amount = parseInt(document.getElementById('buyAmount').value);
-        //     if (!selectedProduct || isNaN(amount) || amount < 1 || amount > selectedProduct.quantity) {
-        //         alert("Invalid amount.");
-        //         return;
-        //     }
-
-        //     const totalSale = selectedProduct.price * amount;
-        //     const newQty = selectedProduct.quantity - amount;
-
-        //     fetch(`/api/products/${selectedProduct._id}`, {
-        //         method: "PUT",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({
-        //             quantity: newQty,
-        //             revenue: totalSale // send revenue increment
-        //         })
-        //     }).then(res => {
-        //         if (res.ok) {
-        //             alert("Purchase successful!");
-        //             closeModal();
-        //             loadProducts();
-        //         } else {
-        //             alert("Failed to update product.");
-        //         }
-        //     });
-        // }
         function confirmBuy() {
     const amount = parseInt(document.getElementById('buyAmount').value);
     if (!selectedProduct || isNaN(amount) || amount < 1 || amount > selectedProduct.quantity) {
@@ -200,6 +173,7 @@
             loadProducts();
         } else {
             alert("Failed to update product.");
+            console.log("Failed to update product:", res.statusText);
         }
     });
 }

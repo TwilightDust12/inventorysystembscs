@@ -36,5 +36,33 @@
             </div>
         </div>      
         <!-- <script src="/draft/frontend/js/login.js"></script> -->
+        <script>
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (e) => {
+              e.preventDefault(); // Prevent the default form submission
+          
+              const formData = new FormData(form);
+              const data = Object.fromEntries(formData.entries());
+          
+              try {
+                const response = await fetch('/login', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(data),
+                });
+          
+                if (response.ok) {
+                  alert('Login successful!');
+                  window.location.href = '/pages/dashboard.html'; // Redirect to dashboard
+                } else {
+                  const result = await response.json();
+                  alert(result.message || 'Invalid login credentials');
+                }
+              } catch (err) {
+                console.error('Error:', err);
+                alert('An error occurred. Please try again.');
+              }
+            });
+          </script>
     </body>
 </html>
