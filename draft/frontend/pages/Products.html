@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Products</title>
     <link rel="stylesheet" href="../css/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -79,17 +79,10 @@
     <script>
       // Fetch products and update top cards
       function updateTopCards() {
-        fetch('/api/products/')
-          .then(res => res.json())
-          .then(products => {
-            let totalRevenue = products.reduce((sum, p) => sum + (p.revenue || 0), 0);
-            // let purchases = products.reduce((sum, p) => sum + (p.price * p.quantity), 0);
-            // let profit = totalRevenue - purchases;
-
-            document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
-            // document.getElementById('purchasesValue').textContent = `$${purchases.toFixed(2)}`;
-            // document.getElementById('profitValue').textContent = `$${profit.toFixed(2)}`;
-          });
+        fetch('/api/sales/').then(res => res.json()).then(sales => {
+      let totalRevenue = sales.reduce((sum, p) => sum + (p.revenue || 0), 0);
+      document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
+    });
       }
 
       updateTopCards();

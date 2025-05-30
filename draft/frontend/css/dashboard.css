@@ -420,3 +420,24 @@ header {
     .stock-count {
       background-color: red;
     }
+
+    #resetRevenueBtn {
+      color: #333; /* Default icon color */
+      transition: color 0.3s ease;
+    }
+    
+    #resetRevenueBtn:hover {
+      color: #4ED7F1; /* Change color on hover */
+    }
+
+    .placeholder-row{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100px;
+      background-color: #f0f0f0;
+      border-radius: 8px;
+      color: #888;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }

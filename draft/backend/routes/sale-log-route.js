@@ -1,5 +1,5 @@
 import express from "express";
-import Sale from "../models/sale-logs.js"
+import Sale from "../models/sale.js"; // Ensure this is your Mongoose model for sales
 
 const router = express.Router();
 
@@ -48,14 +48,16 @@ router.get('/api/sales', async (req, res) => {
   }
 });
 
-router.delete('/api/sales', async (req, res) => {
+// DELETE route to reset sales
+router.delete("/api/sales", async (req, res) => {
   try {
-    await Sale.deleteMany({});
-    res.status(200).json({ message: 'All sales deleted' });
+    const result = await Sale.deleteMany({}); // Delete all sales records
+    console.log("Deleted sales data:", result); // Debugging log
+    res.status(200).send("All sales data deleted.");
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error deleting sales data:", err);
+    res.status(500).send("Failed to reset sales data.");
   }
 });
-
 
 export default router;

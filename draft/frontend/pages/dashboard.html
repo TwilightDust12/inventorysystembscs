@@ -36,7 +36,9 @@
             <div class="rev-card">
               <p>
                 Revenue<br><strong id="revenueValue">$0.00</strong>
-                <button id="resetRevenueBtn" style="float: right; font-size: 0.8rem; margin-top: -10px;">Reset</button>
+                <button id="resetRevenueBtn" style="float: right; font-size: 1.2rem; margin-top: -10px; background: none; border: none; cursor: pointer;">
+                  <i class="fas fa-redo"></i>
+                </button>
               </p>
             </div>
           </section>
@@ -117,7 +119,7 @@
           if (res.ok) {
             alert("Revenue reset successful.");
             document.getElementById('revenueValue').textContent = `$0.00`;
-
+            
             // Reset bar chart
             if (salesChart) {
               salesChart.data.datasets.forEach(ds => {
@@ -126,7 +128,7 @@
               salesChart.update();
             }
 
-            // Reset pie chart with animation
+            // Reset pie chart
             if (pieChart) {
               pieChart.data.labels = ['No Sales'];
               pieChart.data.datasets = [{
@@ -134,9 +136,8 @@
                 backgroundColor: ['#ccc']
               }];
               pieChart.options.plugins.tooltip.enabled = false;
-              pieChart.update(); // 👈 this triggers the animation
+              pieChart.update();
             }
-
           } else {
             alert("Failed to reset revenue.");
           }
@@ -145,10 +146,12 @@
     });
 
     //Refreshes revenue card
-    fetch('/api/sales/').then(res => res.json()).then(sales => {
-      let totalRevenue = sales.reduce((sum, p) => sum + (p.revenue || 0), 0);
-      document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
-    });
+    fetch('/api/sales/', { cache: "no-store" })
+      .then(res => res.json())
+      .then(sales => {
+        let totalRevenue = sales.reduce((sum, p) => sum + (p.revenue || 0), 0);
+        document.getElementById('revenueValue').textContent = `$${totalRevenue.toFixed(2)}`;
+      });
 
     //charts and tables
     fetch('/api/products/')
@@ -159,24 +162,42 @@
         const stockAlertBody = document.querySelector('#stockAlertTable tbody');
         stockAlertBody.innerHTML = '';
 
-        products.filter(p => p.quantity <= 10).forEach(product => {
-          stockAlertBody.innerHTML += `
+        const lowStockProducts = products.filter(p => p.quantity <= 10);
+
+        if (lowStockProducts.length === 0) {
+          stockAlertBody.innerHTML = `
             <tr>
-              <td>${product.name}</td>
-              <td>${product.quantity}</td>
-              <td><span class="alert-qty">${product.quantity}</span></td>
+              <td colspan="3" class="placeholder-row">No products with low stock</td>
             </tr>
           `;
-        });
+        } else {
+          lowStockProducts.forEach(product => {
+            stockAlertBody.innerHTML += `
+              <tr>
+                <td>${product.name}</td>
+                <td>${product.quantity}</td>
+                <td><span class="alert-qty">${product.quantity}</span></td>
+              </tr>
+            `;
+          });
+        }
 
         // Top Products 
         const topProductsBody = document.querySelector('#topProductsTable tbody');
         topProductsBody.innerHTML = '';
 
-        products
+        const topProducts = products
           .sort((a, b) => b.quantity - a.quantity)
-          .slice(0, 5)
-          .forEach(product => {
+          .slice(0, 5);
+
+        if (topProducts.length === 0) {
+          topProductsBody.innerHTML = `
+            <tr>
+              <td colspan="2" class="placeholder-row">No top products available</td>
+            </tr>
+          `;
+        } else {
+          topProducts.forEach(product => {
             topProductsBody.innerHTML += `
               <tr>
                 <td>${product.name}</td>
@@ -184,6 +205,7 @@
               </tr>
             `;
           });
+        }
 
         // Product Cards Section
         const productGrid = document.getElementById('dashboardProductGrid');

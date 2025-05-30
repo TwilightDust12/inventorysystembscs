@@ -237,8 +237,9 @@
                   method: "PUT",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ price, quantity })
-                }).then(res => {
-                  if(res.ok) {
+                })
+                .then(res => {
+                  if (res.ok) {
                     alert("Product updated!");
                     loadAdjustments();
                   } else {
