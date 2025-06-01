@@ -137,33 +137,73 @@
             selectedProduct = null;
         }
 
+        // function confirmBuy() {
+        //     const amount = parseInt(document.getElementById('buyAmount').value);
+        //     if (!selectedProduct || isNaN(amount) || amount < 1 || amount > selectedProduct.quantity) {
+        //         alert("Invalid amount.");
+        //         return;
+        //     }
+
+        //     const totalSale = selectedProduct.price * amount;
+        //     const newQty = selectedProduct.quantity - amount;
+
+        //     fetch(`/api/products/${selectedProduct._id}`, {
+        //         method: "PUT",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({
+        //             quantity: newQty,
+        //             revenue: totalSale // send revenue increment
+        //         })
+        //     }).then(res => {
+        //         if (res.ok) {
+        //             alert("Purchase successful!");
+        //             closeModal();
+        //             loadProducts();
+        //         } else {
+        //             alert("Failed to update product.");
+        //         }
+        //     });
+        // }
         function confirmBuy() {
-            const amount = parseInt(document.getElementById('buyAmount').value);
-            if (!selectedProduct || isNaN(amount) || amount < 1 || amount > selectedProduct.quantity) {
-                alert("Invalid amount.");
-                return;
-            }
+    const amount = parseInt(document.getElementById('buyAmount').value);
+    if (!selectedProduct || isNaN(amount) || amount < 1 || amount > selectedProduct.quantity) {
+        alert("Invalid amount.");
+        return;
+    }
 
-            const totalSale = selectedProduct.price * amount;
-            const newQty = selectedProduct.quantity - amount;
+    const totalSale = selectedProduct.price * amount;
+    const newQty = selectedProduct.quantity - amount;
 
-            fetch(`/api/products/${selectedProduct._id}`, {
-                method: "PUT",
+    fetch(`/api/products/${selectedProduct._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            quantity: newQty,
+            revenue: totalSale // send revenue increment
+        })
+    }).then(res => {
+        if (res.ok) {
+
+            // ✅ ADD THIS: Log the sale with date
+            fetch(`/api/sales`, {
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    quantity: newQty,
-                    revenue: totalSale // send revenue increment
+                    productId: selectedProduct._id,
+                    amount: amount,
+                    revenue: totalSale
                 })
-            }).then(res => {
-                if (res.ok) {
-                    alert("Purchase successful!");
-                    closeModal();
-                    loadProducts();
-                } else {
-                    alert("Failed to update product.");
-                }
             });
+
+            alert("Purchase successful!");
+            closeModal();
+            loadProducts();
+        } else {
+            alert("Failed to update product.");
         }
+    });
+}
+
 
         document.getElementById('confirmBuyBtn').addEventListener('click', confirmBuy);
 

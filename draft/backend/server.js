@@ -6,6 +6,7 @@ import productRoutes from "./routes/router.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import contactRoutes from "./routes/contact.js";
+import saleRoutes from "./routes/sale-log-route.js"
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 // API routes
 app.use("/", authRoutes);
 app.use("/", contactRoutes);
+app.use("/", saleRoutes);
 app.use("/api/products/", productRoutes);
 
 //address
